@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Light AlgoTrading - Dashboard</title>
+    <title>Light AlgoTrading - Live Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -88,6 +88,12 @@
             font-size: 1.3rem;
             font-weight: 500;
             color: var(--white-80);
+        }
+        
+        .status-badge.live {
+            background: rgba(0, 200, 150, 0.1);
+            border-color: rgba(0, 200, 150, 0.3);
+            color: #00c896;
         }
         
         /* Container */
@@ -351,6 +357,25 @@
         footer p:first-child {
             margin-bottom: 0.8rem;
         }
+        
+        footer a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -362,7 +387,7 @@
                 </svg>
                 <span class="logo-text">Light AlgoTrading</span>
             </div>
-            <div class="status-badge">Paper Trading</div>
+            <div class="status-badge" id="statusBadge">Loading...</div>
         </div>
     </header>
     
@@ -373,10 +398,10 @@
         </div>
         
         <div class="wallet-section">
-            <div class="wallet-label">Research Wallet</div>
+            <div class="wallet-label">Research Wallet • <span id="ethBalance" class="loading">Loading...</span> ETH</div>
             <div class="wallet-content">
-                <div class="wallet-address">0x4Cbc56C8504a4d46416CACFcE138b6B921cFd1a9</div>
-                <a href="https://etherscan.io/address/0x4Cbc56C8504a4d46416CACFcE138b6B921cFd1a9" target="_blank" class="wallet-link">
+                <div class="wallet-address" id="walletAddress">Loading...</div>
+                <a href="#" target="_blank" class="wallet-link" id="etherscanLink">
                     View on Etherscan →
                 </a>
             </div>
@@ -385,26 +410,26 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Portfolio Value</div>
-                <div class="stat-value">$500.00</div>
-                <div class="stat-change positive">+$12.34 (2.5%)</div>
+                <div class="stat-value" id="portfolioValue">$0.00</div>
+                <div class="stat-change positive" id="portfolioChange">+$0.00 (0.0%)</div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-label">Today's P&L</div>
-                <div class="stat-value">+$12.34</div>
-                <div class="stat-change positive">+2.5%</div>
+                <div class="stat-value" id="todayPnl">$0.00</div>
+                <div class="stat-change" id="todayPnlPercent">0.0%</div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-label">Win Rate</div>
-                <div class="stat-value">73%</div>
-                <div class="stat-change">15W / 6L</div>
+                <div class="stat-value" id="winRate">0%</div>
+                <div class="stat-change" id="winLoss">0W / 0L</div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-label">Open Positions</div>
-                <div class="stat-value">3</div>
-                <div class="stat-change">2 strategies active</div>
+                <div class="stat-value" id="openPositions">0</div>
+                <div class="stat-change" id="activeStrategies">0 strategies active</div>
             </div>
         </div>
         
@@ -422,48 +447,9 @@
                         <th>%</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="positionsTable">
                     <tr>
-                        <td>
-                            <div class="token-cell">
-                                <div class="token-icon">Ξ</div>
-                                <span>WETH</span>
-                            </div>
-                        </td>
-                        <td>Arbitrage</td>
-                        <td>0.0856</td>
-                        <td>$2,840.50</td>
-                        <td>$2,863.20</td>
-                        <td class="stat-change positive">+$1.94</td>
-                        <td class="stat-change positive">+0.8%</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="token-cell">
-                                <div class="token-icon">$</div>
-                                <span>USDC</span>
-                            </div>
-                        </td>
-                        <td>Yield Farming</td>
-                        <td>250.00</td>
-                        <td>$1.00</td>
-                        <td>$1.00</td>
-                        <td class="stat-change positive">+$0.15</td>
-                        <td class="stat-change positive">+0.06%</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="token-cell">
-                                <div class="token-icon">₿</div>
-                                <span>WBTC</span>
-                            </div>
-                        </td>
-                        <td>Momentum</td>
-                        <td>0.0038</td>
-                        <td>$64,200.00</td>
-                        <td>$64,580.00</td>
-                        <td class="stat-change positive">+$1.44</td>
-                        <td class="stat-change positive">+0.6%</td>
+                        <td colspan="7" style="text-align: center; opacity: 0.5; padding: 4rem;">Loading positions...</td>
                     </tr>
                 </tbody>
             </table>
@@ -471,56 +457,162 @@
         
         <div class="table-section">
             <div class="table-header">Recent Trades</div>
-            <div class="trades-list">
-                <div class="trade-item">
-                    <div>
-                        <div class="trade-type buy">Buy WETH</div>
-                        <div class="trade-details">Arbitrage • 15 minutes ago</div>
-                    </div>
-                    <div class="trade-pnl stat-change positive">+$1.94</div>
-                </div>
-                
-                <div class="trade-item">
-                    <div>
-                        <div class="trade-type sell">Sell LINK</div>
-                        <div class="trade-details">Momentum • 32 minutes ago</div>
-                    </div>
-                    <div class="trade-pnl stat-change negative">-$0.85</div>
-                </div>
-                
-                <div class="trade-item">
-                    <div>
-                        <div class="trade-type buy">Buy USDC</div>
-                        <div class="trade-details">Yield Farming • 1 hour ago</div>
-                    </div>
-                    <div class="trade-pnl stat-change positive">+$0.15</div>
-                </div>
-                
-                <div class="trade-item">
-                    <div>
-                        <div class="trade-type buy">Buy WBTC</div>
-                        <div class="trade-details">Momentum • 1.5 hours ago</div>
-                    </div>
-                    <div class="trade-pnl stat-change positive">+$1.44</div>
-                </div>
-                
-                <div class="trade-item">
-                    <div>
-                        <div class="trade-type sell">Sell UNI</div>
-                        <div class="trade-details">Arbitrage • 2 hours ago</div>
-                    </div>
-                    <div class="trade-pnl stat-change positive">+$0.67</div>
-                </div>
+            <div class="trades-list" id="tradesList">
+                <div style="text-align: center; opacity: 0.5; padding: 4rem;">Loading trades...</div>
             </div>
         </div>
     </div>
     
     <footer>
         <div class="container">
-            <p>Light AlgoTrading • Research Project • Paper Trading Mode</p>
+            <p>Light AlgoTrading • Research Project • <span id="tradingMode">Paper Trading Mode</span></p>
             <p>Powered by AI • Real-time market data • 24/7 automated trading</p>
-            <p style="margin-top: 1.6rem;">Built by <a href="https://www.joni.ai" target="_blank" style="color: var(--blue); text-decoration: none;">Joni</a></p>
+            <p style="margin-top: 1.6rem;">Built by <a href="https://www.joni.ai" target="_blank">Joni</a></p>
         </div>
     </footer>
+    
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000/api' 
+            : '/api';
+        
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch(`${API_BASE}/dashboard`);
+                const data = await response.json();
+                updateDashboard(data);
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        }
+        
+        function updateDashboard(data) {
+            // Status
+            const statusBadge = document.getElementById('statusBadge');
+            statusBadge.textContent = data.status.mode === 'paper' ? 'Paper Trading' : 'Live Trading';
+            if (data.status.isRunning) {
+                statusBadge.classList.add('live');
+            }
+            
+            // Wallet
+            document.getElementById('walletAddress').textContent = data.wallet.address;
+            document.getElementById('ethBalance').textContent = data.wallet.ethBalance.toFixed(4);
+            document.getElementById('ethBalance').classList.remove('loading');
+            document.getElementById('etherscanLink').href = 
+                `https://etherscan.io/address/${data.wallet.address}`;
+            
+            // Portfolio
+            document.getElementById('portfolioValue').textContent = 
+                '$' + data.portfolio.totalValue.toFixed(2);
+            const pnl = data.portfolio.totalPnl;
+            const pnlPercent = (pnl / data.portfolio.initialCapital * 100).toFixed(2);
+            const changeEl = document.getElementById('portfolioChange');
+            changeEl.textContent = `${pnl >= 0 ? '+' : ''}$${pnl.toFixed(2)} (${pnlPercent}%)`;
+            changeEl.className = pnl >= 0 ? 'stat-change positive' : 'stat-change negative';
+            
+            // Performance
+            const todayPnl = data.performance.todayPnl;
+            document.getElementById('todayPnl').textContent = 
+                (todayPnl >= 0 ? '+' : '') + '$' + todayPnl.toFixed(2);
+            document.getElementById('todayPnl').className = 
+                todayPnl >= 0 ? 'stat-value' : 'stat-value';
+            document.getElementById('todayPnlPercent').textContent = 
+                (todayPnl >= 0 ? '+' : '') + data.performance.todayPnlPercent + '%';
+            document.getElementById('todayPnlPercent').className = 
+                todayPnl >= 0 ? 'stat-change positive' : 'stat-change negative';
+            
+            document.getElementById('winRate').textContent = 
+                data.performance.winRate.toFixed(1) + '%';
+            document.getElementById('winLoss').textContent = 
+                `${data.performance.wins}W / ${data.performance.losses}L`;
+            
+            // Positions
+            document.getElementById('openPositions').textContent = data.positions.length;
+            const uniqueStrategies = [...new Set(data.positions.map(p => p.strategy))].length;
+            document.getElementById('activeStrategies').textContent = 
+                `${uniqueStrategies} strategies active`;
+            
+            updatePositionsTable(data.positions);
+            updateTradesList(data.trades);
+            
+            // Mode
+            document.getElementById('tradingMode').textContent = 
+                data.status.mode === 'paper' ? 'Paper Trading Mode' : 'Live Trading Mode';
+        }
+        
+        function updatePositionsTable(positions) {
+            const tbody = document.getElementById('positionsTable');
+            if (positions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; opacity: 0.5; padding: 4rem;">No open positions</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = positions.map(pos => `
+                <tr>
+                    <td>
+                        <div class="token-cell">
+                            <div class="token-icon">${pos.token[0]}</div>
+                            <span>${pos.token}</span>
+                        </div>
+                    </td>
+                    <td>${pos.strategy}</td>
+                    <td>${pos.amount.toFixed(4)}</td>
+                    <td>$${pos.entryPrice.toFixed(2)}</td>
+                    <td>$${pos.currentPrice.toFixed(2)}</td>
+                    <td class="stat-change ${pos.pnl >= 0 ? 'positive' : 'negative'}">
+                        ${pos.pnl >= 0 ? '+' : ''}$${pos.pnl.toFixed(2)}
+                    </td>
+                    <td class="stat-change ${pos.pnlPercent >= 0 ? 'positive' : 'negative'}">
+                        ${pos.pnlPercent >= 0 ? '+' : ''}${pos.pnlPercent.toFixed(2)}%
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function updateTradesList(trades) {
+            const list = document.getElementById('tradesList');
+            if (trades.length === 0) {
+                list.innerHTML = '<div style="text-align: center; opacity: 0.5; padding: 4rem;">No trades yet</div>';
+                return;
+            }
+            
+            list.innerHTML = trades.slice(0, 10).map(trade => {
+                const date = new Date(trade.timestamp);
+                const timeAgo = getTimeAgo(date);
+                
+                return `
+                <div class="trade-item">
+                    <div>
+                        <div class="trade-type ${trade.type}">${trade.type === 'buy' ? 'Buy' : 'Sell'} ${trade.token}</div>
+                        <div class="trade-details">${trade.strategy} • ${timeAgo}</div>
+                    </div>
+                    <div class="trade-pnl stat-change ${trade.pnl >= 0 ? 'positive' : 'negative'}">
+                        ${trade.pnl >= 0 ? '+' : ''}$${trade.pnl.toFixed(2)}
+                    </div>
+                </div>
+            `}).join('');
+        }
+        
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'just now';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+            const days = Math.floor(hours / 24);
+            return `${days} day${days > 1 ? 's' : ''} ago`;
+        }
+        
+        // Initial load
+        fetchDashboardData();
+        
+        // Refresh every 30 seconds
+        setInterval(fetchDashboardData, 30000);
+        
+        console.log('⚡ Light AlgoTrading Dashboard');
+        console.log('📊 Connected to API');
+        console.log('🔄 Auto-refresh: 30s');
+    </script>
 </body>
 </html>
