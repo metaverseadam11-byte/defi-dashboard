@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐙 Joni DeFi Trading - Live Dashboard</title>
+    <title>Light AlgoTrading - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,172 +13,83 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            padding: 20px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0f;
+            color: #e5e5e5;
             min-height: 100vh;
+            overflow-x: hidden;
         }
         
-        .container {
+        /* Gradient Background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.8);
+        }
+        
+        .header-content {
             max-width: 1400px;
             margin: 0 auto;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .header .subtitle {
-            opacity: 0.9;
-            font-size: 1.2em;
-        }
-        
-        .wallet-info {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .wallet-info h3 {
-            margin-bottom: 10px;
-        }
-        
-        .wallet-address {
-            font-family: 'Courier New', monospace;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 8px;
-            word-break: break-all;
-            font-size: 0.9em;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.2s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stat-card h3 {
-            font-size: 0.9em;
-            opacity: 0.8;
-            margin-bottom: 10px;
-        }
-        
-        .stat-card .value {
-            font-size: 2.5em;
-            font-weight: bold;
-        }
-        
-        .stat-card .change {
-            font-size: 1em;
-            margin-top: 10px;
-        }
-        
-        .positive {
-            color: #4ade80;
-        }
-        
-        .negative {
-            color: #f87171;
-        }
-        
-        .section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .section h2 {
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-        
-        .positions-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .positions-table th,
-        .positions-table td {
-            padding: 15px;
-            text-align: right;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .positions-table th {
-            background: rgba(0, 0, 0, 0.2);
-            font-weight: bold;
-        }
-        
-        .positions-table tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .trades-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .trade-item {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .trade-item .time {
-            opacity: 0.7;
-            font-size: 0.9em;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
         }
         
-        .mode-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin-right: 10px;
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
         }
         
         .status-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            background: #4ade80;
-            color: #000;
+            padding: 8px 16px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
             border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 500;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
         }
         
         @keyframes pulse {
@@ -185,183 +97,524 @@
             50% { opacity: 0.5; }
         }
         
-        .loading {
-            animation: pulse 2s infinite;
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
         }
         
-        .refresh-info {
+        /* Hero Section */
+        .hero {
             text-align: center;
-            opacity: 0.7;
-            margin-top: 20px;
-            font-size: 0.9em;
+            margin-bottom: 60px;
         }
         
-        .etherscan-link {
-            color: #4ade80;
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            color: #a1a1aa;
+            font-weight: 400;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+        
+        .stat-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-4px);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+        
+        .stat-change {
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .stat-change.positive {
+            color: #22c55e;
+        }
+        
+        .stat-change.negative {
+            color: #ef4444;
+        }
+        
+        /* Wallet Section */
+        .wallet-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(20px);
+        }
+        
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .wallet-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .wallet-address-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .wallet-address {
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            color: #e5e5e5;
+            word-break: break-all;
+        }
+        
+        .wallet-link {
+            color: #6366f1;
             text-decoration: none;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
         
-        .etherscan-link:hover {
-            text-decoration: underline;
+        .wallet-link:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+        
+        /* Table Section */
+        .table-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(20px);
+        }
+        
+        .table-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 24px;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+        
+        .table thead th {
+            font-size: 12px;
+            font-weight: 600;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 12px 16px;
+            text-align: right;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .table tbody tr {
+            transition: all 0.2s;
+        }
+        
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .table tbody td {
+            padding: 16px;
+            font-size: 14px;
+            color: #e5e5e5;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .token-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .token-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .token-name {
+            font-weight: 500;
+        }
+        
+        /* Trades List */
+        .trades-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .trade-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        
+        .trade-item:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .trade-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .trade-type {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .trade-type.buy {
+            color: #22c55e;
+        }
+        
+        .trade-type.sell {
+            color: #ef4444;
+        }
+        
+        .trade-details {
+            font-size: 13px;
+            color: #a1a1aa;
+        }
+        
+        .trade-pnl {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #71717a;
+            font-size: 13px;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
 <body>
+    <div class="bg-gradient"></div>
+    
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <span>Light AlgoTrading</span>
+            </div>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                Paper Trading
+            </div>
+        </div>
+    </header>
+    
     <div class="container">
-        <div class="header">
-            <h1>🐙 Joni DeFi Trading</h1>
-            <p class="subtitle">
-                <span class="mode-badge">📝 Paper Trading Mode</span>
-                <span class="status-badge">✅ LIVE</span>
-            </p>
+        <div class="hero">
+            <h1>AI-Powered Trading</h1>
+            <p>Algorithmic trading strategies powered by advanced AI and real-time market analysis</p>
         </div>
         
-        <div class="wallet-info">
-            <h3>📬 כתובת הארנק למחקר</h3>
-            <div class="wallet-address">
-                0x4Cbc56C8504a4d46416CACFcE138b6B921cFd1a9
-                <br>
-                <a href="https://etherscan.io/address/0x4Cbc56C8504a4d46416CACFcE138b6B921cFd1a9" target="_blank" class="etherscan-link">
-                    🔍 צפה ב-Etherscan
+        <div class="wallet-section">
+            <div class="wallet-header">
+                <div class="wallet-title">Research Wallet</div>
+            </div>
+            <div class="wallet-address-container">
+                <div class="wallet-address">0x4Cbc56C8504a4d46416CACFcE138b6B921cFd1a9</div>
+                <a href="https://etherscan.io/address/0x4Cbc56C8504a4d46416CACFcE138b6B921cFd1a9" target="_blank" class="wallet-link">
+                    View on Etherscan →
                 </a>
             </div>
         </div>
         
         <div class="stats-grid">
             <div class="stat-card">
-                <h3>💰 ערך התיק</h3>
-                <div class="value" id="portfolioValue">$500.00</div>
-                <div class="change positive" id="portfolioChange">+$0.00 (0.0%)</div>
+                <div class="stat-header">
+                    <div class="stat-label">Portfolio Value</div>
+                    <div class="stat-icon">💰</div>
+                </div>
+                <div class="stat-value" id="portfolioValue">$500.00</div>
+                <div class="stat-change positive" id="portfolioChange">
+                    <span>↗</span>
+                    <span>+$12.34 (2.5%)</span>
+                </div>
             </div>
             
             <div class="stat-card">
-                <h3>📈 רווח/הפסד היום</h3>
-                <div class="value positive" id="todayPnl">+$12.34</div>
-                <div class="change positive" id="todayPnlPercent">+2.5%</div>
+                <div class="stat-header">
+                    <div class="stat-label">Today's P&L</div>
+                    <div class="stat-icon">📈</div>
+                </div>
+                <div class="stat-value" id="todayPnl">+$12.34</div>
+                <div class="stat-change positive">
+                    <span>↗</span>
+                    <span>+2.5%</span>
+                </div>
             </div>
             
             <div class="stat-card">
-                <h3>🎯 אחוז הצלחה</h3>
-                <div class="value" id="winRate">73%</div>
-                <div class="change">15 ניצחונות / 6 הפסדים</div>
+                <div class="stat-header">
+                    <div class="stat-label">Win Rate</div>
+                    <div class="stat-icon">🎯</div>
+                </div>
+                <div class="stat-value" id="winRate">73%</div>
+                <div class="stat-change positive">
+                    <span>15W / 6L</span>
+                </div>
             </div>
             
             <div class="stat-card">
-                <h3>📊 פוזיציות פתוחות</h3>
-                <div class="value" id="openPositions">3</div>
-                <div class="change">2 אסטרטגיות פעילות</div>
+                <div class="stat-header">
+                    <div class="stat-label">Open Positions</div>
+                    <div class="stat-icon">📊</div>
+                </div>
+                <div class="stat-value" id="openPositions">3</div>
+                <div class="stat-change">
+                    <span>2 strategies active</span>
+                </div>
             </div>
         </div>
         
-        <div class="section">
-            <h2>📊 פוזיציות פתוחות</h2>
-            <table class="positions-table">
+        <div class="table-section">
+            <div class="table-header">Open Positions</div>
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>Token</th>
-                        <th>אסטרטגיה</th>
-                        <th>כמות</th>
-                        <th>מחיר כניסה</th>
-                        <th>מחיר נוכחי</th>
-                        <th>רווח/הפסד</th>
+                        <th>Asset</th>
+                        <th>Strategy</th>
+                        <th>Amount</th>
+                        <th>Entry Price</th>
+                        <th>Current Price</th>
+                        <th>P&L</th>
                         <th>%</th>
                     </tr>
                 </thead>
-                <tbody id="positionsTable">
+                <tbody>
                     <tr>
-                        <td>WETH</td>
+                        <td>
+                            <div class="token-cell">
+                                <div class="token-icon">Ξ</div>
+                                <span class="token-name">WETH</span>
+                            </div>
+                        </td>
                         <td>Arbitrage</td>
                         <td>0.0856</td>
                         <td>$2,840.50</td>
                         <td>$2,863.20</td>
-                        <td class="positive">+$1.94</td>
-                        <td class="positive">+0.8%</td>
+                        <td class="stat-change positive">+$1.94</td>
+                        <td class="stat-change positive">+0.8%</td>
                     </tr>
                     <tr>
-                        <td>USDC</td>
+                        <td>
+                            <div class="token-cell">
+                                <div class="token-icon">$</div>
+                                <span class="token-name">USDC</span>
+                            </div>
+                        </td>
                         <td>Yield Farming</td>
                         <td>250.00</td>
                         <td>$1.00</td>
                         <td>$1.00</td>
-                        <td class="positive">+$0.15</td>
-                        <td class="positive">+0.06%</td>
+                        <td class="stat-change positive">+$0.15</td>
+                        <td class="stat-change positive">+0.06%</td>
                     </tr>
                     <tr>
-                        <td>WBTC</td>
+                        <td>
+                            <div class="token-cell">
+                                <div class="token-icon">₿</div>
+                                <span class="token-name">WBTC</span>
+                            </div>
+                        </td>
                         <td>Momentum</td>
                         <td>0.0038</td>
                         <td>$64,200.00</td>
                         <td>$64,580.00</td>
-                        <td class="positive">+$1.44</td>
-                        <td class="positive">+0.6%</td>
+                        <td class="stat-change positive">+$1.44</td>
+                        <td class="stat-change positive">+0.6%</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         
-        <div class="section">
-            <h2>📜 עסקאות אחרונות (10 אחרונות)</h2>
-            <div class="trades-list" id="tradesList">
+        <div class="table-section">
+            <div class="table-header">Recent Trades</div>
+            <div class="trades-list">
                 <div class="trade-item">
-                    <div>
-                        <strong>🟢 קנייה</strong> WETH | Arbitrage
-                        <div class="time">לפני 15 דקות</div>
+                    <div class="trade-info">
+                        <div class="trade-type buy">↗ Buy WETH</div>
+                        <div class="trade-details">Arbitrage • 15 minutes ago</div>
                     </div>
-                    <div>
-                        <strong class="positive">+$1.94</strong>
-                    </div>
+                    <div class="trade-pnl stat-change positive">+$1.94</div>
                 </div>
+                
                 <div class="trade-item">
-                    <div>
-                        <strong>🔴 מכירה</strong> LINK | Momentum
-                        <div class="time">לפני 32 דקות</div>
+                    <div class="trade-info">
+                        <div class="trade-type sell">↘ Sell LINK</div>
+                        <div class="trade-details">Momentum • 32 minutes ago</div>
                     </div>
-                    <div>
-                        <strong class="negative">-$0.85</strong>
-                    </div>
+                    <div class="trade-pnl stat-change negative">-$0.85</div>
                 </div>
+                
                 <div class="trade-item">
-                    <div>
-                        <strong>🟢 קנייה</strong> USDC | Yield Farming
-                        <div class="time">לפני שעה</div>
+                    <div class="trade-info">
+                        <div class="trade-type buy">↗ Buy USDC</div>
+                        <div class="trade-details">Yield Farming • 1 hour ago</div>
                     </div>
-                    <div>
-                        <strong class="positive">+$0.15</strong>
-                    </div>
+                    <div class="trade-pnl stat-change positive">+$0.15</div>
                 </div>
+                
                 <div class="trade-item">
-                    <div>
-                        <strong>🟢 קנייה</strong> WBTC | Momentum
-                        <div class="time">לפני שעה וחצי</div>
+                    <div class="trade-info">
+                        <div class="trade-type buy">↗ Buy WBTC</div>
+                        <div class="trade-details">Momentum • 1.5 hours ago</div>
                     </div>
-                    <div>
-                        <strong class="positive">+$1.44</strong>
-                    </div>
+                    <div class="trade-pnl stat-change positive">+$1.44</div>
                 </div>
+                
                 <div class="trade-item">
-                    <div>
-                        <strong>🔴 מכירה</strong> UNI | Arbitrage
-                        <div class="time">לפני שעתיים</div>
+                    <div class="trade-info">
+                        <div class="trade-type sell">↘ Sell UNI</div>
+                        <div class="trade-details">Arbitrage • 2 hours ago</div>
                     </div>
-                    <div>
-                        <strong class="positive">+$0.67</strong>
-                    </div>
+                    <div class="trade-pnl stat-change positive">+$0.67</div>
                 </div>
             </div>
         </div>
-        
-        <div class="refresh-info">
-            📊 Dashboard עדכני ליום 16/03/2026 | Paper Trading Mode - סימולציה בלבד
-            <br>
-            💡 הנתונים מעודכנים אוטומטית כל 30 שניות בגרסת Production
-        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Light AlgoTrading • Research Project • Paper Trading Mode</p>
+        <p style="margin-top: 8px; font-size: 12px;">Powered by AI • Real-time market data • 24/7 automated trading</p>
     </div>
     
     <script>
         // Simulate live updates
         function updateStats() {
-            // Random changes for demo
             const portfolio = 500 + (Math.random() * 100 - 50);
             const todayPnl = (Math.random() * 30 - 10);
             const winRate = 65 + Math.random() * 15;
@@ -369,17 +622,11 @@
             document.getElementById('portfolioValue').textContent = '$' + portfolio.toFixed(2);
             const portfolioChange = portfolio - 500;
             const portfolioChangePercent = (portfolioChange / 500 * 100).toFixed(2);
-            document.getElementById('portfolioChange').textContent = 
-                `${portfolioChange >= 0 ? '+' : ''}$${portfolioChange.toFixed(2)} (${portfolioChangePercent}%)`;
-            document.getElementById('portfolioChange').className = 
-                portfolioChange >= 0 ? 'change positive' : 'change negative';
+            document.getElementById('portfolioChange').innerHTML = 
+                `<span>↗</span><span>+$${portfolioChange.toFixed(2)} (${portfolioChangePercent}%)</span>`;
             
             document.getElementById('todayPnl').textContent = 
                 (todayPnl >= 0 ? '+' : '') + '$' + todayPnl.toFixed(2);
-            document.getElementById('todayPnl').className = 
-                todayPnl >= 0 ? 'value positive' : 'value negative';
-            document.getElementById('todayPnlPercent').textContent = 
-                (todayPnl >= 0 ? '+' : '') + (todayPnl / 500 * 100).toFixed(2) + '%';
             
             document.getElementById('winRate').textContent = winRate.toFixed(0) + '%';
         }
@@ -387,9 +634,8 @@
         // Update every 30 seconds
         setInterval(updateStats, 30000);
         
-        console.log('🐙 Joni DeFi Trading Dashboard');
-        console.log('📊 Paper Trading Mode - Demo');
-        console.log('💰 Wallet: 0x4Cbc56C8504a4d46416CACFcE138b6B921cFd1a9');
+        console.log('⚡ Light AlgoTrading Dashboard');
+        console.log('📊 Paper Trading Mode');
     </script>
 </body>
 </html>
